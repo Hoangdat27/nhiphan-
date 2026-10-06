@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌳 Binary Tree Master - Game Học Cấu Trúc Dữ Liệu Cây</title>
+    <meta name="description" content="Game học tập tương tác về cấu trúc dữ liệu cây nhị phân - Binary Tree Master">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="particles-bg"></div>
+    
+    <!-- MAIN MENU -->
+    <div id="main-menu" class="screen active">
+        <div class="menu-container">
+            <div class="logo-section">
+                <div class="logo-icon">🌳</div>
+                <h1 class="game-title">Binary Tree <span class="highlight">Master</span></h1>
+                <p class="subtitle">Chinh phục cấu trúc dữ liệu cây nhị phân</p>
+            </div>
+            <div class="menu-cards">
+                <div class="menu-card" onclick="startGame('quiz')" id="btn-quiz">
+                    <div class="card-icon">🧠</div>
+                    <div class="card-info">
+                        <h3>Trắc Nghiệm</h3>
+                        <p>Kiểm tra kiến thức lý thuyết về cây nhị phân</p>
+                    </div>
+                    <div class="card-badge">20 câu</div>
+                </div>
+                <div class="menu-card" onclick="startGame('bst')" id="btn-bst">
+                    <div class="card-icon">🔨</div>
+                    <div class="card-info">
+                        <h3>Xây Dựng BST</h3>
+                        <p>Chèn node vào cây nhị phân tìm kiếm đúng vị trí</p>
+                    </div>
+                    <div class="card-badge">Tương tác</div>
+                </div>
+                <div class="menu-card" onclick="startGame('traversal')" id="btn-traversal">
+                    <div class="card-icon">🚶</div>
+                    <div class="card-info">
+                        <h3>Duyệt Cây</h3>
+                        <p>Thực hành duyệt NLR, LNR, LRN</p>
+                    </div>
+                    <div class="card-badge">3 kiểu</div>
+                </div>
+                <div class="menu-card" onclick="startGame('match')" id="btn-match">
+                    <div class="card-icon">🔗</div>
+                    <div class="card-info">
+                        <h3>Nối Khái Niệm</h3>
+                        <p>Ghép đúng thuật ngữ với định nghĩa</p>
+                    </div>
+                    <div class="card-badge">Ghép đôi</div>
+                </div>
+            </div>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-label">Điểm cao nhất</span>
+                    <span class="stat-value" id="high-score">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Tổng lượt chơi</span>
+                    <span class="stat-value" id="total-plays">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Tỉ lệ đúng</span>
+                    <span class="stat-value" id="accuracy">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUIZ MODE -->
+    <div id="quiz-screen" class="screen">
+        <div class="game-header">
+            <button class="back-btn" onclick="goHome()">← Về Menu</button>
+            <div class="header-info">
+                <span class="mode-label">🧠 Trắc Nghiệm</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="quiz-progress"></div>
+                </div>
+            </div>
+            <div class="score-display">
+                <span id="quiz-score">0</span> điểm
+            </div>
+        </div>
+        <div class="quiz-container">
+            <div class="question-number" id="question-num">Câu 1/10</div>
+            <div class="question-card" id="question-card">
+                <div class="question-category" id="q-category">Định nghĩa cây</div>
+                <h2 class="question-text" id="question-text"></h2>
+            </div>
+            <div class="answers-grid" id="answers-container"></div>
+            <div class="quiz-feedback" id="quiz-feedback"></div>
+        </div>
+    </div>
+
+    <!-- BST BUILDER MODE -->
+    <div id="bst-screen" class="screen">
+        <div class="game-header">
+            <button class="back-btn" onclick="goHome()">← Về Menu</button>
+            <div class="header-info">
+                <span class="mode-label">🔨 Xây Dựng BST</span>
+            </div>
+            <div class="score-display">
+                <span id="bst-score">0</span> điểm
+            </div>
+        </div>
+        <div class="bst-container">
+            <div class="bst-challenge" id="bst-challenge">
+                <p>Hãy chọn vị trí đúng để chèn node <span class="highlight-value" id="bst-insert-value">5</span> vào cây BST</p>
+            </div>
+            <div class="bst-canvas-wrapper">
+                <canvas id="bst-canvas" width="900" height="500"></canvas>
+                <div id="bst-click-zones"></div>
+            </div>
+            <div class="bst-controls">
+                <button class="btn-primary" onclick="newBSTChallenge()" id="bst-next-btn">Câu tiếp theo →</button>
+            </div>
+            <div class="bst-feedback" id="bst-feedback"></div>
+        </div>
+    </div>
+
+    <!-- TRAVERSAL MODE -->
+    <div id="traversal-screen" class="screen">
+        <div class="game-header">
+            <button class="back-btn" onclick="goHome()">← Về Menu</button>
+            <div class="header-info">
+                <span class="mode-label">🚶 Duyệt Cây</span>
+            </div>
+            <div class="score-display">
+                <span id="traversal-score">0</span> điểm
+            </div>
+        </div>
+        <div class="traversal-container">
+            <div class="traversal-challenge">
+                <p>Hãy chọn thứ tự duyệt đúng theo phương pháp:</p>
+                <div class="traversal-type" id="traversal-type">NLR (Tiền tự)</div>
+                <div class="traversal-hint" id="traversal-hint"></div>
+            </div>
+            <div class="traversal-canvas-wrapper">
+                <canvas id="traversal-canvas" width="700" height="350"></canvas>
+            </div>
+            <div class="traversal-answer-area">
+                <div class="selected-nodes" id="selected-nodes">
+                    <span class="placeholder-text">Click các node theo thứ tự duyệt...</span>
+                </div>
+                <div class="node-buttons" id="node-buttons"></div>
+            </div>
+            <div class="traversal-controls">
+                <button class="btn-secondary" onclick="clearTraversalAnswer()">🔄 Làm lại</button>
+                <button class="btn-primary" onclick="checkTraversalAnswer()">✓ Kiểm tra</button>
+                <button class="btn-primary hidden" onclick="newTraversalChallenge()" id="traversal-next-btn">Câu tiếp →</button>
+            </div>
+            <div class="traversal-feedback" id="traversal-feedback"></div>
+        </div>
+    </div>
+
+    <!-- MATCH MODE -->
+    <div id="match-screen" class="screen">
+        <div class="game-header">
+            <button class="back-btn" onclick="goHome()">← Về Menu</button>
+            <div class="header-info">
+                <span class="mode-label">🔗 Nối Khái Niệm</span>
+            </div>
+            <div class="score-display">
+                <span id="match-score">0</span> điểm
+            </div>
+        </div>
+        <div class="match-container">
+            <div class="match-instruction">
+                <p>Ghép thuật ngữ bên trái với định nghĩa đúng bên phải</p>
+                <div class="match-round" id="match-round">Vòng 1/5</div>
+            </div>
+            <div class="match-board">
+                <div class="match-column" id="match-terms"></div>
+                <svg class="match-lines" id="match-svg"></svg>
+                <div class="match-column" id="match-definitions"></div>
+            </div>
+            <div class="match-controls">
+                <button class="btn-secondary" onclick="resetMatchSelection()">🔄 Bỏ chọn</button>
+                <button class="btn-primary hidden" onclick="nextMatchRound()" id="match-next-btn">Vòng tiếp →</button>
+            </div>
+            <div class="match-feedback" id="match-feedback"></div>
+        </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="screen">
+        <div class="result-container">
+            <div class="result-icon" id="result-icon">🏆</div>
+            <h1 class="result-title" id="result-title">Xuất sắc!</h1>
+            <div class="result-score-circle">
+                <svg viewBox="0 0 120 120" class="score-ring">
+                    <circle cx="60" cy="60" r="54" class="ring-bg"/>
+                    <circle cx="60" cy="60" r="54" class="ring-fill" id="score-ring-fill"/>
+                </svg>
+                <div class="score-text" id="result-score-text">100%</div>
+            </div>
+            <div class="result-stats" id="result-stats"></div>
+            <div class="result-buttons">
+                <button class="btn-primary" onclick="replayGame()">🔄 Chơi lại</button>
+                <button class="btn-secondary" onclick="goHome()">🏠 Về Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
